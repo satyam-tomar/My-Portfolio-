@@ -2,1226 +2,170 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Satyam_Portfolio</title>
-    <link rel="icon" href="logo.png" type="image/x-icon" />
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Satyam Tomar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            box-sizing: border-box;
+        .hover-rotate:hover {
+            transform: rotate(5deg) scale(1.1);
+            transition: transform 0.5s ease;
         }
 
-        html {
-            scroll-behavior: smooth;
+        .scroll-fade {
+            transition: transform 0.6s ease, opacity 0.6s ease;
         }
 
-        a {
-            text-decoration: none;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* Header */
-        header {
-            background-color: #f5f5f5;
-            padding: 10px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            overflow: visible;
-            /* Allow dropdown to appear outside header */
-        }
-
-        .header_name {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            /* Pushes logo and hamburger apart */
-            padding: 0 20px;
-            font-size: 30px;
-            font-weight: bold;
-        }
-
-        .logo {
-            color: rgb(53, 125, 131);
-            font-family: "Verdana";
-        }
-
-        .header_details {
-            margin-right: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 22px;
-            font-weight: bold;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            transform: translateX(100%);
-            opacity: 0;
-        }
-
-        .header_details a {
-            color: rgb(111, 111, 111);
-        }
-
-        @media (max-width: 768px) {
-            .header_name {
-                display: flex;
-                flex-direction: row;
-                /* Keep logo and hamburger in a row */
-                align-items: center;
-                /* Center vertically */
-                justify-content: space-between;
-                /* Push logo to left, hamburger to right */
-                padding: 0 20px;
-                position: relative;
-                /* Ensure hamburger stays in flow */
-            }
-
-            .logo {
-                order: 1;
-                /* Logo stays first */
-            }
-
-            .header_details {
-                display: none;
-                /* Hide nav links by default */
-                position: absolute;
-                top: 100%;
-                /* Position directly below header */
-                left: 0;
-                right: 0;
-                background-color: #f5f5f5;
-                flex-direction: column;
-                align-items: center;
-                padding: 20px 0;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                z-index: 999;
-                /* Ensure it appears above other content */
-                width: 100%;
-                /* Full width */
-            }
-
-        }
-
-        @media (max-width: 480px) {
-            .header_name {
-                font-size: 20px;
-                padding: 0 15px;
-                /* Slightly reduce padding for smaller screens */
-            }
-
-            .header_details a {
-                font-size: 16px;
-            }
-        }
-
-        h1 {
-            padding-top: 50px;
-            /* Reduced for mobile */
-            padding-left: 20px;
-            /* Adjusted for mobile */
-            font-size: 50px;
-            text-align: left;
-        }
-
-        h2 {
-            text-align: left;
-            color: rgb(50, 50, 50);
-            padding: 10px 20px;
-            /* Adjusted for mobile */
-        }
-
-        .image_container {
-            margin: 50px;
-            /* Reduced margin for mobile */
-            width: 420px;
+        .main-card img {
             height: 450px;
-            min-width: 250px;
-            /* Prevent excessive shrinking */
+            width: 340px;
         }
 
-        .image_container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 20px 100px 20px;
-            box-shadow: 0px 5px 8px rgba(49, 48, 48, 0.658);
+        .right-card {
+            width: 270px;
         }
 
-        .intro {
-            flex: 1;
-            /* Allow text to take available space */
-            margin: 0 20px;
-            /* Consistent margin */
-        }
-
-        .home {
-            margin-top: 50px;
-            display: flex;
-            flex-wrap: wrap;
-            /* Allow wrapping for smaller screens */
-            justify-content: center;
-            /* Center content */
-            align-items: flex-start;
-            /* Align items to top */
-            gap: 20px;
-            /* Space between image and text */
-        }
-
-        /* About Section */
-        .about {
-
-            text-align: center;
-            padding-top: 75px;
-            padding-bottom: 80px;
-            margin-top: 120px;
-            background-color: rgba(184, 184, 184, 0.2);
-        }
-
-        .para {
-            margin-top: 20px;
-            /* Reduced for mobile */
-        }
-
-        .about a {
-            margin-top: 10px;
-
-            font-size: 35px;
-            font-weight: bold;
-            color: rgb(53, 125, 131);
-        }
-
-        .img2-container {
-            margin: 20px;
-            width: 380px;
-            height: 450px;
-        }
-
-        .img2-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 100px 20px 20px;
-            box-shadow: 0px 5px 8px rgba(49, 48, 48, 0.658);
-        }
-
-        .about-para {
-            display: flex;
-            justify-content: space-evenly;
-            flex-wrap: wrap;
-            /* Allow wrapping for mobile */
-            margin: 0 20px;
-            /* Consistent margin */
-        }
-
-        .about-para p {
-            height: auto;
-            /* Allow natural height */
-            width: 700px;
-            max-width: 100%;
-            /* Prevent overflow */
-            text-align: left;
-            font-size: 18px;
-            color: rgb(31, 31, 31);
-            margin: 20px 0;
-            /* Spacing */
-        }
-
-        /* Skills Section */
-        .skills {
-            text-align: center;
-            padding-top: 75px;
-            /* margin-top: 48px; */
-            margin-bottom: 100px;
-        }
-
-        .skills a {
-            font-size: 35px;
-            font-weight: bold;
-            color: rgb(53, 125, 131);
-        }
-
-        .skill-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            padding: 80px;
-            max-width: 1000px;
-            margin: 0 auto;
-            margin-top: 100px;
-        }
-
-        .skill-box {
-            background-color: white;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            text-align: center;
-            border-radius: 5px 20px 5px;
-            font-size: 16px;
-            font-weight: bold;
-            transition: transform 0.5s, box-shadow 0.2s;
-        }
-
-        .skill-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 6px black;
-        }
-
-        /* Projects Section */
-        .project {
-            background-color: rgba(184, 184, 184, 0.2);
-            padding-bottom: 30px;
-        }
-
-        .projects {
-            text-align: center;
-            /* margin-top: 48px; */
-            padding-top: 75px;
-        }
-
-        .projects a {
-            font-size: 35px;
-            font-weight: bold;
-            color: rgb(53, 125, 131);
-        }
-
-        .projects-section {
-            margin-top: 100px;
-            display: flex;
-            flex-wrap: wrap;
-            /* wrap items to next row after 3 */
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .projects-box {
-            background-color: white;
-            height: 500px;
-            width: 400px;
-            border-radius: 15px 60px;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
-            transition: transform 0.5s, box-shadow 0.2s;
-            position: relative;
-            /* important */
-            padding-bottom: 20px;
-            /* optional: to prevent text overlap with button */
-        }
-
-        .projects-box h2 {
-            text-align: center;
-            padding: 0px;
-        }
-
-        .projects-box p {
-            padding-top: 5px;
-        }
-
-        .projects-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 6px black;
-        }
-
-        .projects-box button {
+        .card-label {
             position: absolute;
-            bottom: 15px;
-            right: 15px;
-            background-color: #4CAF50;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
             color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 10px 30px 10px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .projects-box button:hover {
-            background-color: #409743dd;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(153, 153, 153, 0.5);
-        }
-
-        /* Contact Section */
-        .contact {
-            text-align: center;
-            padding-bottom: 40px;
-            padding-top: 75px;
-        }
-
-        .contact a {
-            font-size: 35px;
             font-weight: bold;
-            color: rgb(53, 125, 131);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
         }
-
-        .profile-container {
-            margin-top: 80px;
-            margin-left: 420px;
-            width: 700px;
-            height: 450px;
-        }
-
-        .profile-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-        }
-
-        .profile-links a {
-            flex: 1 1 200px;
-            max-width: 220px;
-            text-decoration: none;
-            font-size: 18px;
-            color: #333;
-            padding: 12px 15px;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
-            border-radius: 5px 20px 5px;
-            transition: transform 0.5s, box-shadow 0.2s;
-            text-align: center;
-        }
-
-        .profile-links a:hover {
-            background-color: rgb(233, 233, 233);
-            transform: translateY(-5px);
-        }
-
-        /* Resume Section */
-        .resume {
-            text-align: center;
-            padding-top: 75px;
-            padding-bottom: 60px;
-            /* margin-top: 120px; */
-            background-color: rgba(184, 184, 184, 0.2);
-        }
-
-        .resume a {
-            /* text-align: center; */
-            margin-top: 10px;
-            font-size: 35px;
-            font-weight: bold;
-            color: rgb(53, 125, 131);
-        }
-
-        .resume-container {
-            /* text-align: center; */
-        }
-
-        .resume-box {
-            width: 30%;
-            height: 550px;
-            /* margin: 0 auto; */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .resume-box embed {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .download-btn {
-            background-color: #00b33f;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 18px;
-            margin-top: 50px;
-            border-radius: 10px 30px 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .download-btn:hover {
-            background-color: #009835;
-            box-shadow: 0px 0px 1px 1px rgba(128, 128, 128, 0.623);
-        }
-
-        .resume-download-container {
-            padding-top: 60px;
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-        }
-
-        /* Get in Touch Section */
-        .touch {
-            text-align: center;
-            padding-top: 75px;
-            margin-bottom: 100px;
-        }
-
-        .touch a {
-            font-size: 35px;
-            font-weight: bold;
-            color: rgb(53, 125, 131);
-        }
-
-        .contact-me-container {
-            max-width: 600px;
-            width: 90%;
-            /* Use percentage to fit within viewport */
-            margin: 100px auto;
-            /* Center horizontally, keep vertical margin */
-            padding: 30px;
-            /* Slightly reduce padding for better fit */
-            border-radius: 20px 100px 20px;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
-            background-color: white;
-        }
-
-        .contact-me-container h2 {
-            color: rgb(53, 125, 131);
-        }
-
-        .contact-me-container p {
-            color: rgb(77, 77, 77);
-            margin-bottom: 30px;
-        }
-
-        /* Media Queries for Responsiveness */
-        @media (max-width: 768px) {
-
-            /* Existing styles */
-            .contact-me-container {
-                width: 95%;
-                margin: 50px auto;
-                padding: 20px;
-            }
-
-            /* Updated styles */
-            .profile-container {
-                margin: 80px auto;
-                width: 90%;
-                padding: 0;
-            }
-
-            .profile-links {
-                justify-content: center;
-                gap: 15px;
-            }
-
-            .profile-links a {
-                max-width: 150px;
-                font-size: 16px;
-                padding: 10px 12px;
-            }
-
-            .home {
-                flex-direction: column;
-                /* Stack image and text */
-                align-items: center;
-                /* Center items */
-            }
-
-            .image_container {
-                width: 300px;
-                /* Slightly larger for mobile */
-                height: 350px;
-                margin: 20px auto;
-                /* Center image */
-            }
-
-            .intro {
-                margin: 0 20px;
-                /* Consistent margin */
-                text-align: center;
-                /* Center text for better appearance */
-            }
-
-            h1 {
-                padding-top: 20px;
-                padding-left: 0;
-                font-size: 40px;
-                text-align: center;
-                /* Center for mobile */
-            }
-
-            h2 {
-                padding-left: 0;
-                padding: 10px 0;
-                text-align: center;
-                /* Center for mobile */
-            }
-
-            .about-para {
-                flex-direction: column;
-                /* Stack elements */
-                align-items: center;
-                /* Center content */
-            }
-
-            .img2-container {
-                display: none;
-                /* Hide image in mobile view */
-            }
-
-            .about-para p {
-                width: 100%;
-                /* Full width */
-                max-width: 90%;
-                /* Prevent overflow */
-                margin: 0 auto;
-                /* Center paragraph */
-                text-align: center;
-                /* Center text for mobile */
-            }
-
-            .para {
-                margin-top: 10px;
-                /* Adjust spacing */
-            }
-        }
-
-        @media (max-width: 480px) {
-
-            .image_container {
-                width: 250px;
-                height: 300px;
-            }
-
-            h1 {
-                font-size: 30px;
-            }
-
-            h2 {
-                font-size: 20px;
-            }
-
-            .about-para p {
-                font-size: 16px;
-                /* Slightly smaller for readability */
-            }
-
-            .contact-me-container {
-                width: 100%;
-                /* Full width for very small screens */
-                margin: 30px auto;
-                /* Further reduce margin */
-                padding: 15px;
-                /* Minimal padding */
-            }
-
-            .contact-me-container p {
-                font-size: 14px;
-                /* Smaller text for readability */
-            }
-
-            .bt {
-                width: 60%;
-                /* Slightly wider button for small screens */
-                font-size: 16px;
-                /* Smaller button text */
-                height: 35px;
-            }
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 10px 30px 10px;
-            font-size: 16px;
-        }
-
-        .bt {
-            width: 35%;
-            font-size: 20px;
-            height: 40px;
-            border-radius: 10px 30px 10px;
-            border: none;
-            background-color: #00b33f;
-            color: white;
-            margin: 0 auto;
-        }
-
-        .bt:hover {
-            background-color: #009835;
-            box-shadow: 0px 0px 1px 1px rgba(128, 128, 128, 0.623);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #f5f5f5;
-            margin-top: 50px;
-        }
-
-        /* Media Queries for Responsiveness */
-        @media (max-width: 1200px) {
-            .header_details {
-                padding-left: 0;
-                margin-left: auto;
-                padding-right: 20px;
-            }
-
-            .image_container {
-                padding-left: 0;
-                padding-top: 20x;
-            }
-
-            .about img {
-                margin-left: 0;
-                margin-top: 20px;
-            }
-
-            .about-para h2 {
-                padding-left: 0;
-                justify-content: center;
-            }
-
-            .about-para p {
-                padding-left: 0;
-                width: 100%;
-                max-width: 700px;
-                margin: 0 auto;
-                position: relative;
-            }
-
-            .profile-container {
-                margin-left: 0;
-                width: 100%;
-                padding: 0 20px;
-            }
-
-            .contact-me-container {
-                margin-left: 0;
-                width: 90%;
-                margin: 20px auto;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 30px;
-            }
-
-            h2 {
-                font-size: 20px;
-            }
-
-            .header_details {
-                flex-direction: column;
-                padding-left: 10px;
-            }
-
-            .image_container {
-                width: 200px;
-                height: 250px;
-            }
-
-            .about a,
-            .skills a,
-            .projects a,
-            .contact a,
-            .resume a,
-            .touch a {
-                font-size: 25px;
-            }
-
-            .skill-box {
-                font-size: 14px;
-            }
-
-            .projects-title {
-                font-size: 18px;
-            }
-
-            .resume-box {
-                width: 90%;
-                height: 300px;
-            }
-
-            .bt {
-                width: 50%;
-            }
-
-            .contact-me-container {
-                border-radius: 10px 50px 10px;
-            }
-
-            .profile-container {
-                margin: 50px auto;
-                /* Slightly reduce margin for smaller screens */
-                width: 95%;
-                /* Slightly wider for very small screens */
-            }
-
-            .profile-links {
-                gap: 10px;
-                /* Further reduce gap */
-            }
-
-            .profile-links a {
-                max-width: 120px;
-                /* Even smaller buttons */
-                font-size: 14px;
-                /* Smaller font size */
-                padding: 8px 10px;
-                /* Minimal padding */
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header_name {
-                display: flex;
-                /* flex-direction: row; */
-                align-items: center;
-                justify-content: space-between;
-                /* padding: 0 20px; */
-                /* position: relative; */
-            }
-
-            .header_details {
-                padding-left: 20px;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            h1 {
-                padding-top: 100px;
-                padding-left: 20px;
-                font-size: 40px;
-            }
-
-            h2 {
-                padding-left: 20px;
-            }
-
-            .image_container {
-                width: 250px;
-                height: 300px;
-                padding-right: 0;
-            }
-
-            .intro {
-                padding-top: 20px;
-            }
-
-            .about {
-                padding-bottom: 40px;
-            }
-
-            .skill-section {
-                padding: 20px;
-            }
-
-            .projects-section {
-                flex-direction: column;
-                align-items: center;
-                padding: 10px;
-            }
-
-            .projects-box {
-                width: 90%;
-                height: auto;
-                padding-bottom: 60px;
-                /* Space for button */
-            }
-
-            .resume-box {
-                width: 80%;
-                height: 400px;
-            }
-
-            .resume-download-container {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .profile-container {
-                margin: 80px auto;
-                /* Center horizontally */
-                width: 90%;
-                /* Responsive width */
-                padding: 0;
-                /* Remove unnecessary padding */
-            }
-
-            .profile-links {
-                justify-content: center;
-                /* Center the buttons */
-                gap: 15px;
-                /* Reduce gap between buttons */
-            }
-
-            .profile-links a {
-                max-width: 150px;
-                /* Smaller button width */
-                font-size: 16px;
-                /* Smaller font size */
-                padding: 10px 12px;
-                /* Reduced padding for compactness */
-            }
-
-            .header_name {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                padding: 0 20px;
-            }
-
-            .header_details {
-                display: none;
-                position: absolute;
-                top: 100%;
-                right: 0;
-                left: auto;
-                width: 200px;
-                background-color: #f5f5f5;
-                flex-direction: column;
-                align-items: center;
-                padding: 20px 0;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                z-index: 999;
-                border-radius: 20px 50px 20px;
-            }
-
-            .logo {
-                order: 1;
-            }
-
-            .header_details a {
-                font-size: 18px;
-                /* Slightly smaller font for compact dropdown */
-                padding: 10px 0;
-                width: 100%;
-                text-align: center;
-                /* Center text within the dropdown */
-            }
-        }
-
-            @media (min-width: 769px) {
-                .header_details {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-
     </style>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
-<body>
-    <header>
-        <nav class="na">
-            <div class="header_name">
-                <a href="#" class="logo">Satyam</a>
-            </div>
-            <span class="header_details">
-                <a href="#">Home</a>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#contact">Socials</a>
-                <a href="#resume">Resume</a>
-                <a href="#touch">contact</a>
-            </span>
-        </nav>
-    </header>
-
-
-    <div class="home">
-
-        <div class="image_container">
-            <img src="its me.jpeg" alt="my image">
+<body class="bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 text-gray-900">
+    <!-- Profile & Social Cards Section -->
+    <section class="min-h-screen flex items-center justify-center p-4 gap-8 lg:gap-24 xl:gap-48 flex-wrap">
+        <!-- Main Profile Card -->
+        <div
+            class="main-card relative text-center p-4 bg-white shadow-2xl rounded-3xl w-full sm:w-[85%] md:w-[65%] lg:w-[28%] max-w-lg hover:shadow-3xl">
+            <img class="object-cover mx-auto mb-4 rounded-3xl shadow" src="satyam.jpeg" alt="me">
+            <h1 class="text-2xl font-bold mb-1">I'm Satyam Tomar</h1>
+            <p class="text-lg text-gray-600">Artificial Intelligence Engineer</p>
         </div>
 
-        <div class="intro">
-            <h1>Hi! I am Satyam Tomar </h1>
-            <h2>Aspiring Machine Learning Engineer</h2>
+        <!-- Right Cards -->
+        <div class="flex flex-col gap-6">
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/in/satyam-tomar-332678285/"
+                class="transform transition-transform hover:scale-110 relative">
+                <div
+                    class="right-card relative bg-white rounded-3xl shadow-2xl overflow-hidden mx-auto hover:shadow-3xl scroll-fade">
+                    <div class="h-[60px] w-full">
+                        <img src="https://media.licdn.com/dms/image/v2/D5616AQG3bwIaFIz1fA/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1738513390950?e=1765411200&v=beta&t=ImHHf1ZkeDQLX48TnI5Z_0F5KbFJNHjopruMmTnbIVs"
+                            class="h-full w-full object-cover" alt="background">
+                    </div>
+                    <div class="flex pl-4 -mt-8">
+                        <img src="https://media.licdn.com/dms/image/v2/D5635AQHVjrSyFnWbiQ/profile-framedphoto-shrink_200_200/B56ZpU83Q5I8AY-/0/1762361832753?e=1764180000&v=beta&t=lPM5Np-MtD6flfHe_oUeMJIMmylCn_K3on8qShn3uZU"
+                            class="h-16 hover-rotate w-16 rounded-full border-2 border-white object-cover"
+                            alt="profile">
+                    </div>
+                    <div class="px-4 py-2">
+                        <h1 class="text-lg font-bold">Satyam Tomar</h1>
+                        <p class="text-gray-600 text-xs mt-1">Ex-Intern at NLDC Grid India | Machine Learning | MERN
+                            Stack Developer | Java & DSA | B.Tech CSE, LPU</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- GitHub -->
+            <a href="https://github.com/satyam-jaat" class="transform transition-transform hover:scale-110 relative">
+                <div
+                    class="right-card relative bg-white rounded-3xl shadow-2xl overflow-hidden mx-auto hover:shadow-3xl scroll-fade">
+                    <div class="h-[70px] w-full">
+                        <img src="https://github.com/satyam-jaat/satyam-jaat/raw/output/github-snake-dark.svg"
+                            class="h-full w-full object-cover bg-[#151b23]" alt="background">
+                    </div>
+                    <div class="flex items-center px-4 py-3 -mt-2">
+                        <img src="https://avatars.githubusercontent.com/u/148446427?v=4"
+                            class="h-16 w-16 rounded-full border-2 border-white object-cover hover:rotate-6 transition-transform"
+                            alt="profile">
+                        <div class="ml-3">
+                            <h1 class="text-lg font-bold">Satyam Tomar</h1>
+                            <p class="text-gray-600 text-sm">satyam-jaat | he/him</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- LeetCode -->
+            <a href="https://leetcode.com/satyam_tomar/" class="transform transition-transform hover:scale-110 relative">
+                <div
+                    class="right-card relative bg-[#2c2c2c] rounded-3xl shadow-2xl overflow-hidden mx-auto flex flex-col p-2 gap-3 hover:shadow-3xl scroll-fade">
+                    <div class="flex items-center gap-3 bg-[#3a3a3a] p-2 rounded-2xl">
+                        <img src="https://assets.leetcode.com/users/satyam_tomar/avatar_1741610764.png"
+                            class="h-16 w-16 rounded-2xl object-cover hover-rotate" alt="profile">
+                        <div class="text-white flex-1">
+                            <h1 class="font-bold text-base">Satyam Tomar</h1>
+                            <p class="text-gray-400 text-xs">satyam_tomar</p>
+                            <p class="text-gray-400 text-xs">Rank <strong class="text-white">770,123</strong></p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 overflow-x-auto py-1 px-1 bg-[#3a3a3a] rounded-2xl">
+                        <img src="https://assets.leetcode.com/static_assets/others/lg2550.png"
+                            class="h-8 w-8 object-cover rounded-full" alt="50 problems badge">
+                        <img src="https://assets.leetcode.com/static_assets/others/lg25100.png"
+                            class="h-8 w-8 object-cover rounded-full" alt="100 problems badge">
+                    </div>
+                </div>
+            </a>
         </div>
+    </section>
 
+<!-- Skills Section -->
+<section class="min-h-screen flex flex-col items-center justify-center p-4 gap-8 lg:gap-16">
+    <h1 class="text-3xl font-bold mb-8">Skills</h1>
 
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
+        <img src="https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg" alt="MongoDB" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" alt="Node.js" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://cdn.worldvectorlogo.com/logos/express-109.svg" alt="Express.js" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://cdn.worldvectorlogo.com/logos/react-2.svg" alt="React.js" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://cdn.worldvectorlogo.com/logos/rest-api.svg" alt="RESTful APIs" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://cdn.worldvectorlogo.com/logos/npm.svg" alt="npm" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://cdn.worldvectorlogo.com/logos/flask.svg" alt="Flask" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/NumPy_logo_2020.svg" alt="NumPy" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Pandas_logo.svg" alt="Pandas" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://matplotlib.org/_static/images/logo2.svg" alt="Matplotlib" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://seaborn.pydata.org/_static/logo-wide-lightbg.svg" alt="Seaborn" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="Git" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" alt="Python" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://www.vectorlogo.zone/logos/java/java-icon.svg" alt="Java" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" alt="CSS" class="h-16 w-16 hover:scale-110 transition-transform">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript" class="h-16 w-16 hover:scale-110 transition-transform">
+        <!-- Add other logos similarly -->
     </div>
-
-    <section>
-        <div class="about" id="about">
-            <a href="#about">About Me</a>
-
-            <div class="about-para">
+</section>
 
 
-                <div class="img2-container">
-                    <img src="me.jpeg" alt="my image">
-                </div>
 
-                <div class="para">
-                    <h2>
-                        I'm Satyam Tomar
-                    </h2>
+    <!-- Experience Section -->
+    <section class="min-h-screen flex flex-col items-center justify-center p-4 gap-8 lg:gap-16">
+        <h1 class="text-3xl font-bold mb-8">Experience</h1>
 
-                    <p>
-                        I’m a B.Tech Computer Science and Engineering student at Lovely Professional University,
-                        currently in my second year. I'm passionate about learning new technologies and building useful
-                        projects.
-                        <br><br>
-                        Right now, I’m focusing on Java, web development using the MERN stack, SQL, and MongoDB. I'm
-                        also improving my Data Structures and Algorithms (DSA) skills.
-                        <br><br>
-                        I’ve chosen Machine Learning as my elective and currently learning Supervised Learning. I aim to
-                        become a Machine Learning Engineer by gaining a strong base in both development and machine
-                        learning.
-                    </p>
-                </div>
-
-            </div>
-
+        <!-- Experience Card 1 -->
+        <div
+            class="relative main-card text-left p-6 bg-white shadow-2xl rounded-3xl w-full sm:w-[85%] md:w-[70%] lg:w-[60%] hover:shadow-3xl transition-transform duration-300">
+            <div class="card-label bg-gradient-to-r from-green-400 to-teal-500">NLDC Grid India</div>
+            <h2 class="text-xl font-semibold mt-4">MERN Stack Developer Intern</h2>
+            <p class="text-gray-600 mt-2">
+                Developed a Demand Analysis Portal using the MERN stack to visualize and manage energy demand data.
+                Modified and optimized the database schema, migrated legacy datasets, and improved data retrieval speed
+                by 30%. Built RESTful APIs and revamped the frontend with ECharts to create a modern, responsive, and
+                enhanced overall user experience.
+            </p>
         </div>
     </section>
-
-
-    <section>
-        <div class="skills" id="skills">
-            <a href="#skills">Skills</a>
-
-            <div class="skill-section">
-                <div class="skill-box">Java</div>
-                <div class="skill-box">DSA</div>
-                <div class="skill-box">C++</div>
-                <div class="skill-box">Python</div>
-                <div class="skill-box">Numpy</div>
-                <div class="skill-box">Pandas</div>
-                <div class="skill-box">OOPs</div>
-                <div class="skill-box">HTML</div>
-                <div class="skill-box">CSS</div>
-                <div class="skill-box">BootStrap</div>
-                <div class="skill-box">JavaScript</div>
-                <div class="skill-box">Nodejs</div>
-                <div class="skill-box">REST APIs</div>
-                <div class="skill-box">SQL</div>
-                <div class="skill-box">Git</div>
-                <div class="skill-box">GitHub</div>
-                <div class="skill-box">WordPress</div>
-            </div>
-        </div>
-    </section>
-
-
-    <section class="project">
-        <div class="projects" id="projects">
-            <a href="#projects">Projects</a>
-
-            <div class="projects-section">
-
-                <div class="projects-box">
-                    <h2>CardioScan 🫀</h2>
-                    <p style="text-align: left; padding: 15px">
-                        A machine learning-based system that classifies ECG images as normal or abnormal using
-                        Convolutional Neural Networks (CNN) and MobileNetV2.
-                        Upload an ECG image and get instant results to support cardiac diagnosis.
-                    </p>
-
-                    <h3>Technologies Used:</h3>
-                    <p style="text-align: left; padding: 15px">
-                        HTML | CSS | JavaScript | Bootstrap | Uiverse | Python(Flask) | NumPy | Pandas | CNN |
-                        MobileNetV2 | Image Dataset (GitHub)
-                    </p>
-
-                    <a href="https://github.com/satyam-jaat/normal-abnormal-ecg" target="_blank">
-                        <button>View Project</button>
-                    </a>
-                </div>
-
-                <div class="projects-box">
-                    <h2>ChatBot using Gemini API 💬</h2>
-                    <p style="text-align: left; padding: 15px">
-                        An intelligent and interactive ChatBot powered by Gemini API with a beautiful frontend design.
-                        It provides conversational responses using AI and serves as a virtual assistant through a
-                        seamless user interface.
-                    </p>
-
-                    <h3>Technologies Used:</h3>
-                    <p style="text-align: left; padding: 15px">
-                        HTML | CSS | JavaScript | Python | Flask | Gemini API
-                    </p>
-
-                    <a href="https://github.com/satyam-jaat/Gemini-API-ChatBot" target="_blank">
-                        <button>View Project</button>
-                    </a>
-                </div>
-
-
-                <div class="projects-box">
-                    <h2>Bubble-Based Skills Tracker 🎈</h2>
-                    <p style="text-align: left; padding: 15px">
-                        A creative bubble-based system to track skill development. Users can add new skills as floating
-                        bubbles, and pop them when completed, making skill management fun and interactive.
-                    </p>
-
-                    <h3>Technologies Used:</h3>
-                    <p style="text-align: left; padding: 15px">
-                        HTML | CSS | JavaScript
-                    </p>
-
-                    <a href="https://github.com/satyam-jaat/InteractiveSkillTracker" target="_blank">
-                        <button>View Project</button>
-                    </a>
-                </div>
-
-                <div class="projects-box">
-                    <h2>Web Code Editor 🧑‍💻</h2>
-                    <p style="text-align: left; padding: 15px">
-                        A live code editor inspired by VS Code using Monaco Editor. Allows users to create and edit
-                        HTML, CSS, and JavaScript files on the left, while previewing the output in real-time on the
-                        right. Includes a toggle to switch to full preview mode.
-                    </p>
-
-                    <h3>Technologies Used:</h3>
-                    <p style="text-align: left; padding: 15px">
-                        HTML | CSS | JavaScript | Monaco Editor | iframe | Live Preview
-                    </p>
-
-                    <a href="https://github.com/satyam-jaat/lite-web-dev-editor" target="_blank">
-                        <button>View Project</button>
-                    </a>
-                </div>
-
-
-                <div class="projects-box">
-                    <h2>AI-Based Interview Preparation System &#128221;</h2>
-                    <p style="text-align: left; padding: 15px">AI-powered interactive system for real-time
-                        speech-to-speech mock interviews. Analyzes responses, tracks performance, and provides graphical
-                        insights. Offers data-driven feedback to help users refine their interview skills.</p>
-                    <h3>Technologies Used:</h3>
-                    <p style="text-align: left; padding: 15px">HTML | CSS | BootStrap | JavaScript | Three.js |
-                        Python(Flask, Flask-CORS) | speech_recognition | gTTS | spacy | Dataset (.json)</p>
-                    <button onclick="window.open('https://github.com/satyam-jaat/Ai_based_Interview_', '_blank')">View
-                        Project</button>
-                </div>
-
-                <div class="projects-box">
-                    <h2>Daily Task Tracker &#128221;</h2>
-                    <p style="text-align: left; padding: 15px">The Task Management System allows users to add daily
-                        tasks and track their progress using a chart that shows the percentage of work completed each
-                        day.</p>
-                    <h3>Technologies Used:</h3>
-                    <p style="text-align: left; padding: 15px">HTML | CSS | JavaScript | localStorage</p>
-                    <a href="https://github.com/satyam-jaat/Task_Management" target="_blank">
-                        <button>View Project</button>
-                    </a>
-                </div>
-
-                <div class="projects-box">
-                    <h2>Hello, I'm Satyam Tomar &#128100;</h2>
-                    <p style="text-align: left; padding: 15px">This portfolio presents my work in software development,
-                        web development, showcasing projects that demonstrate my skills in programming languages,
-                        frameworks, and creative design.</p>
-                    <h3>Technologies Used:</h3>
-                    <p style="text-align: left; padding: 15px">HTML | CSS</p>
-                    <a href="https://github.com/satyam-jaat/My-Portfolio-" target="_blank">
-                        <button>View Project</button>
-                    </a>
-                </div>
-
-                <div class="projects-box">
-                    <h2>Banking Management &#128176;</h2>
-                    <p style="text-align: left; padding: 15px">The Banking Management System lets users create accounts,
-                        deposit or withdraw money, and view transaction history, providing basic banking functionality
-                        in a user-friendly interface.</p>
-                    <h3>Technologies Used:</h3>
-                    <p style="text-align: left; padding: 15px">Java | JDBC | OOPs | SQL | MySQL</p>
-                    <a href="#projects">
-                        <button>View Project</button>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-
-    <section>
-        <div class="contact" id="contact">
-            <a href="#contact">Connect with Me</a>
-
-            <div class="profile-container">
-                <div class="profile-links">
-                    <a href="https://www.linkedin.com/in/satyam-tomar-332678285/" target="_blank">
-                        <i class="fa-brands fa-linkedin"></i> Linkedin
-                    </a>
-                    <a href="https://github.com/satyam-jaat" target="_blank">
-                        <i class="fa-brands fa-github"></i> GitHub
-                    </a>
-                    <a href="https://leetcode.com/u/satyam_tomar/" target="_blank">
-                        <i class="fa-solid fa-code"></i> LeetCode
-                    </a>
-                    <a href="https://www.geeksforgeeks.org/user/your-username/" target="_blank">
-                        <i class="fa-solid fa-terminal"></i> GeeksforGeeks
-                    </a>
-                    <a href="mailto:satyamtomar41015@gmail.com" target="_blank">
-                        <i class="fa-solid fa-envelope"></i> Email
-                    </a>
-                    <a href="https://www.hackerrank.com/profile/satyamtomar41015" target="_blank">
-                        <i class="fa-brands fa-hackerrank"></i> HackerRank
-                    </a>
-                </div>
-            </div>
-    </section>
-
-
-    <section>
-        <div class="resume" id="resume">
-            <a href="#resume">My Resume</a>
-
-            <div class="resume-download-container">
-                <!-- Resume Preview Box -->
-                <div class="resume-box">
-                    <embed src="SatyamCV.pdf#toolbar=0&navpanes=0&scrollbar=0" type="application/pdf" />
-                </div>
-
-                <!-- Download Button -->
-                <a href="SatyamCV.pdf" download="Satyam_Tomar_Resume.pdf">
-                    <button class="download-btn">Download Here</button>
-                </a>
-
-            </div>
-
-        </div>
-    </section>
-
-    <section>
-        <div class="touch" id="touch">
-            <a href="#touch">Get in Touch</a>
-
-            <div class="contact-me-container">
-                <p>If you have any queries, suggestions, or just want to connect, feel free to send me a message!</p>
-
-                <form action="https://formspree.io/f/xkgjnbld" method="POST">
-                    <input type="text" name="name" placeholder="Your Name" required>
-                    <input type="email" name="email" placeholder="Your Email" required>
-                    <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-                    <button class="bt" type="submit">Send Message</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-
-    <footer>
-        <p>&copy; 2025, Created with ❤️ by <strong>Satyam Tomar</strong></p>
-    </footer>
 </body>
-
 </html>
