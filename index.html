@@ -7,165 +7,1007 @@
     <title>Satyam Tomar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* --- Global & Utilities --- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            /* Subtle animated gradient background */
+            background: linear-gradient(-45deg, #f3f4f6, #e5e7eb, #d1d5db, #f9fafb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* --- Animation Utilities --- */
+        .hover-rotate {
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
         .hover-rotate:hover {
             transform: rotate(5deg) scale(1.1);
-            transition: transform 0.5s ease;
         }
 
-        .scroll-fade {
-            transition: transform 0.6s ease, opacity 0.6s ease;
+        /* 3D Card Tilt Base Styles */
+        .tilt-card {
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+            will-change: transform;
+            z-index: 20;
+            /* Ensure card is above lines */
         }
 
-        .main-card img {
-            height: 450px;
-            width: 340px;
+        /* Shimmer Effect on Hover */
+        .shimmer-card {
+            position: relative;
+            overflow: hidden;
+            z-index: 20;
+            /* Ensure card is above lines */
         }
 
-        .right-card {
-            width: 270px;
+        .shimmer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            z-index: 2;
+            display: block;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+            transform: skewX(-25deg);
+            transition: left 0.75s;
         }
 
+        .shimmer-card:hover::before {
+            left: 125%;
+        }
+
+        /* Card Label Style */
         .card-label {
             position: absolute;
             top: 0.75rem;
             right: 0.75rem;
-            background: linear-gradient(90deg, #ff7e5f, #feb47b);
             color: white;
             font-weight: bold;
             font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             text-transform: uppercase;
+            letter-spacing: 0.05em;
+            z-index: 10;
         }
+
+        /* --- Entry Animations --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .delay-100 {
+            transition-delay: 100ms;
+        }
+
+        .delay-200 {
+            transition-delay: 200ms;
+        }
+
+        .delay-300 {
+            transition-delay: 300ms;
+        }
+
+        /* --- Breathing Animation --- */
+        .breathing {
+            animation: breathing 4s ease-in-out infinite;
+        }
+
+        .breathing:nth-child(odd) {
+            animation-delay: 1s;
+        }
+
+        @keyframes breathing {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .skill-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .skill-icon:hover {
+            animation-play-state: paused;
+            transform: scale(1.25) !important;
+            filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.2));
+        }
+
+        /* --- Progress Bar --- */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 10px rgba(255, 126, 95, 0.7);
+        }
+
+        /* --- Back to Top --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        /* --- Floating Animation --- */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* --- NODE CONNECTOR STYLES (New) --- */
+        #connection-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* Let clicks pass through */
+            z-index: 0;
+        }
+
+        .connection-line {
+            fill: none;
+            stroke: #f97316;
+            /* Light Gray base */
+            stroke-width: 2;
+            opacity: 0.6;
+        }
+
+        .connection-particle {
+            fill: #f97316;
+            /* Orange particle */
+            filter: drop-shadow(0 0 4px #f97316);
+        }
+
+        /* Pulse animation for the heading */
+        .heading-pulse {
+            animation: pulseText 3s infinite;
+        }
+
+        @keyframes pulseText {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-zoomIn {
+            animation: zoomIn 0.35s ease-out forwards;
+        }
+
+        .image-box {
+    display: flex;
+    gap: 1rem;
+}
+
+.image-box img {
+    width: 75%;   /* Mobile = 3/4 width */
+    flex: none;
+}
+
+/* Small screens 640px+ */
+@media (min-width: 640px) {
+    .image-box img {
+        width: 20%;   /* change to whatever width you want */
+    }
+}
+
+/* Large screens 1024px+ */
+@media (min-width: 1024px) {
+    .image-box img {
+        width: 70%;
+    }
+}
+
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 text-gray-900">
-    <!-- Profile & Social Cards Section -->
-    <section class="min-h-screen flex items-center justify-center p-4 gap-8 lg:gap-24 xl:gap-48 flex-wrap">
-        <!-- Main Profile Card -->
-        <div
-            class="main-card relative text-center p-4 bg-white shadow-2xl rounded-3xl w-full sm:w-[85%] md:w-[65%] lg:w-[28%] max-w-lg hover:shadow-3xl">
-            <img class="object-cover mx-auto mb-4 rounded-3xl shadow" src="satyam.jpeg" alt="me">
-            <h1 class="text-2xl font-bold mb-1">I'm Satyam Tomar</h1>
-            <p class="text-lg text-gray-600">Artificial Intelligence Engineer</p>
-        </div>
+<body class="text-gray-900 antialiased selection:bg-orange-200 selection:text-orange-900">
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="back-to-top hover:shadow-orange-500/50" id="backToTop">↑</div>
 
-        <!-- Right Cards -->
-        <div class="flex flex-col gap-6">
-            <!-- LinkedIn -->
-            <a href="https://www.linkedin.com/in/satyam-tomar-332678285/"
-                class="transform transition-transform hover:scale-110 relative">
-                <div
-                    class="right-card relative bg-white rounded-3xl shadow-2xl overflow-hidden mx-auto hover:shadow-3xl scroll-fade">
-                    <div class="h-[60px] w-full">
-                        <img src="https://media.licdn.com/dms/image/v2/D5616AQG3bwIaFIz1fA/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1738513390950?e=1765411200&v=beta&t=ImHHf1ZkeDQLX48TnI5Z_0F5KbFJNHjopruMmTnbIVs"
-                            class="h-full w-full object-cover" alt="background">
+    <section class="relative min-h-screen flex items-center justify-center p-6 py-20" id="home-section">
+
+        <svg id="connection-svg">
+        </svg>
+
+        <div class="flex flex-wrap gap-8 lg:gap-24 xl:gap-48 justify-center items-center w-full max-w-7xl z-10">
+
+            <div id="profileCard"
+                class="tilt-card reveal main-card relative text-center p-4 bg-white/80 backdrop-blur-sm shadow-2xl rounded-[2rem] w-full sm:w-[80%] md:w-[60%] lg:w-[27%] max-w-lg hover:shadow-orange-500/20 border border-white/50">
+                <div class="relative">
+                    <div
+                        class="absolute top-10 left-1/2 -translate-x-1/2 w-64 h-64 bg-gradient-to-tr from-orange-200 to-pink-200 rounded-full blur-3xl opacity-50 -z-10">
                     </div>
-                    <div class="flex pl-4 -mt-8">
-                        <img src="https://media.licdn.com/dms/image/v2/D5635AQHVjrSyFnWbiQ/profile-framedphoto-shrink_200_200/B56ZpU83Q5I8AY-/0/1762361832753?e=1764180000&v=beta&t=lPM5Np-MtD6flfHe_oUeMJIMmylCn_K3on8qShn3uZU"
-                            class="h-16 hover-rotate w-16 rounded-full border-2 border-white object-cover"
-                            alt="profile">
-                    </div>
-                    <div class="px-4 py-2">
-                        <h1 class="text-lg font-bold">Satyam Tomar</h1>
-                        <p class="text-gray-600 text-xs mt-1">Ex-Intern at NLDC Grid India | Machine Learning | MERN
-                            Stack Developer | Java & DSA | B.Tech CSE, LPU</p>
-                    </div>
+                    <img class="object-cover mx-auto mb-4 rounded-3xl shadow-lg transition-transform duration-500 hover:scale-[1.02]"
+                        src="satyam.jpeg" alt="me" style="height: 450px; width: 340px;">
                 </div>
-            </a>
+                <h1
+                    class="text-3xl font-bold mb-1 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
+                    I'm Satyam Tomar</h1>
+                <div class="h-8 flex justify-center items-center">
+                    <p class="text-lg text-gray-600 font-medium">Aspiring AI Engineer</p>
+                </div>
+            </div>
 
-            <!-- GitHub -->
-            <a href="https://github.com/satyam-jaat" class="transform transition-transform hover:scale-110 relative">
-                <div
-                    class="right-card relative bg-white rounded-3xl shadow-2xl overflow-hidden mx-auto hover:shadow-3xl scroll-fade">
-                    <div class="h-[70px] w-full">
-                        <img src="https://github.com/satyam-jaat/satyam-jaat/raw/output/github-snake-dark.svg"
-                            class="h-full w-full object-cover bg-[#151b23]" alt="background">
-                    </div>
-                    <div class="flex items-center px-4 py-3 -mt-2">
-                        <img src="https://avatars.githubusercontent.com/u/148446427?v=4"
-                            class="h-16 w-16 rounded-full border-2 border-white object-cover hover:rotate-6 transition-transform"
-                            alt="profile">
-                        <div class="ml-3">
-                            <h1 class="text-lg font-bold">Satyam Tomar</h1>
-                            <p class="text-gray-600 text-sm">satyam-jaat | he/him</p>
+            <div class="flex flex-col gap-6 perspective-1000 relative">
+
+                <div class="reveal-right text-center lg:text-left mb-2">
+                    <h2
+                        class="text-2xl font-bold text-gray-800 flex items-center gap-2 justify-center lg:justify-start heading-pulse">
+                        <!-- <span class="w-3 h-3 bg-orange-500 rounded-full inline-block animate-ping"></span> -->
+                        Connect & Contribute
+                    </h2>
+                    <p class="text-sm text-gray-500">Join me on projects and coding adventures</p>
+                </div>
+
+                <a href="https://www.linkedin.com/in/satyam-tomar-332678285/"
+                    class="profile-link-card transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 reveal-right delay-100 group">
+                    <div
+                        class="right-card shimmer-card relative bg-white rounded-3xl shadow-2xl overflow-hidden mx-auto hover:shadow-3xl w-[270px]">
+                        <div class="h-[60px] w-full overflow-hidden">
+                            <img src="linkedin_backgroudn.jpeg"
+                                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                alt="background">
+                        </div>
+                        <div class="flex pl-4 -mt-8 relative z-10">
+                            <img src="me.jpeg"
+                                class="h-16 w-16 rounded-full border-2 border-white object-cover shadow-md transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110"
+                                alt="profile">
+                        </div>
+                        <div class="px-4 py-3">
+                            <h1 class="text-lg font-bold group-hover:text-[#0a66c2] transition-colors">Satyam Tomar</h1>
+                            <p class="text-gray-600 text-xs mt-1 line-clamp-2">Ex-Intern at NLDC Grid India | Machine
+                                Learning | MERN Stack</p>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            <!-- LeetCode -->
-            <a href="https://leetcode.com/satyam_tomar/" class="transform transition-transform hover:scale-110 relative">
-                <div
-                    class="right-card relative bg-[#2c2c2c] rounded-3xl shadow-2xl overflow-hidden mx-auto flex flex-col p-2 gap-3 hover:shadow-3xl scroll-fade">
-                    <div class="flex items-center gap-3 bg-[#3a3a3a] p-2 rounded-2xl">
-                        <img src="https://assets.leetcode.com/users/satyam_tomar/avatar_1741610764.png"
-                            class="h-16 w-16 rounded-2xl object-cover hover-rotate" alt="profile">
-                        <div class="text-white flex-1">
-                            <h1 class="font-bold text-base">Satyam Tomar</h1>
-                            <p class="text-gray-400 text-xs">satyam_tomar</p>
-                            <p class="text-gray-400 text-xs">Rank <strong class="text-white">770,123</strong></p>
+                <a href="https://github.com/satyam-tomar"
+                    class="profile-link-card transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 reveal-right delay-200 group">
+                    <div
+                        class="right-card shimmer-card relative bg-white rounded-3xl shadow-2xl overflow-hidden mx-auto hover:shadow-3xl w-[270px]">
+                        <div class="h-[70px] w-full">
+                            <img src="https://github.com/satyam-tomar/satyam-tomar/raw/output/github-snake-dark.svg"
+                                class="h-full w-full object-cover bg-[#151b23]" alt="background">
+                        </div>
+                        <div class="flex items-center px-4 py-3 -mt-2 relative z-10">
+                            <img src="https://avatars.githubusercontent.com/u/148446427?v=4"
+                                class="h-16 w-16 rounded-full border-2 border-white object-cover transition-transform duration-500 group-hover:rotate-12"
+                                alt="profile">
+                            <div class="ml-3">
+                                <h1 class="text-lg font-bold group-hover:text-purple-600 transition-colors">Satyam Tomar
+                                </h1>
+                                <p class="text-gray-600 text-sm">satyam-tomar</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex gap-2 overflow-x-auto py-1 px-1 bg-[#3a3a3a] rounded-2xl">
-                        <img src="https://assets.leetcode.com/static_assets/others/lg2550.png"
-                            class="h-8 w-8 object-cover rounded-full" alt="50 problems badge">
-                        <img src="https://assets.leetcode.com/static_assets/others/lg25100.png"
-                            class="h-8 w-8 object-cover rounded-full" alt="100 problems badge">
+                </a>
+
+                <a href="https://leetcode.com/satyam_tomar/"
+                    class="profile-link-card transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 reveal-right delay-300 group">
+                    <div
+                        class="right-card shimmer-card relative bg-[#2c2c2c] rounded-3xl shadow-2xl overflow-hidden mx-auto flex flex-col p-2 gap-3 hover:shadow-3xl w-[270px] border border-gray-700">
+                        <div
+                            class="flex items-center gap-3 bg-[#3a3a3a] p-2 rounded-2xl group-hover:bg-[#444] transition-colors">
+                            <img src="https://assets.leetcode.com/users/satyam_tomar/avatar_1741610764.png"
+                                class="h-16 w-16 rounded-2xl object-cover transition-transform duration-500 group-hover:rotate-6"
+                                alt="profile">
+                            <div class="text-white flex-1">
+                                <h1 class="font-bold text-base text-white">Satyam Tomar</h1>
+                                <p class="text-gray-400 text-xs">satyam_tomar</p>
+                                <p class="text-gray-400 text-xs">Rank <strong class="text-white">620k</strong></p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 overflow-x-auto py-1 px-1 bg-[#3a3a3a] rounded-2xl">
+                            <img src="https://assets.leetcode.com/static_assets/others/lg2550.png"
+                                class="h-8 w-8 object-cover rounded-full hover:scale-125 transition-transform"
+                                alt="badge">
+                            <img src="https://assets.leetcode.com/static_assets/others/lg25100.png"
+                                class="h-8 w-8 object-cover rounded-full hover:scale-125 transition-transform"
+                                alt="badge">
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
         </div>
     </section>
 
-<!-- Skills Section -->
-<section class="min-h-screen flex flex-col items-center justify-center p-4 gap-8 lg:gap-16">
-    <h1 class="text-3xl font-bold mb-8">Skills</h1>
+    <section class="min-h-screen flex flex-col items-center justify-center p-6 gap-8 lg:gap-16 relative">
+        <div class="absolute inset-0"></div>
+        <h1
+            class="text-4xl font-bold mb-8 reveal text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-500">
+            Skills</h1>
 
-    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
-        <img src="https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg" alt="MongoDB" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" alt="Node.js" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://cdn.worldvectorlogo.com/logos/express-109.svg" alt="Express.js" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://cdn.worldvectorlogo.com/logos/react-2.svg" alt="React.js" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://cdn.worldvectorlogo.com/logos/rest-api.svg" alt="RESTful APIs" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://cdn.worldvectorlogo.com/logos/npm.svg" alt="npm" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://cdn.worldvectorlogo.com/logos/flask.svg" alt="Flask" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/NumPy_logo_2020.svg" alt="NumPy" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Pandas_logo.svg" alt="Pandas" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://matplotlib.org/_static/images/logo2.svg" alt="Matplotlib" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://seaborn.pydata.org/_static/logo-wide-lightbg.svg" alt="Seaborn" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="Git" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" alt="Python" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://www.vectorlogo.zone/logos/java/java-icon.svg" alt="Java" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" alt="CSS" class="h-16 w-16 hover:scale-110 transition-transform">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript" class="h-16 w-16 hover:scale-110 transition-transform">
-        <!-- Add other logos similarly -->
-    </div>
-</section>
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-8 lg:gap-12 px-4">
+            <div class="breathing reveal delay-100"><img
+                    src="https://www.vectorlogo.zone/logos/mongodb/mongodb-icon.svg" alt="MongoDB"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-200"><img
+                    src="https://img.icons8.com/?size=100&id=J6KcaRLsTgpZ&format=png&color=000000" alt="SQL"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-300"><img src="https://www.vectorlogo.zone/logos/nodejs/nodejs-icon.svg"
+                    alt="Node.js" class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-100"><img
+                    src="https://www.vectorlogo.zone/logos/expressjs/expressjs-icon.svg" alt="Express.js"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-200"><img
+                    src="https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg" alt="React"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-300"><img
+                    src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="RESTful APIs"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-100"><img src="https://www.vectorlogo.zone/logos/npmjs/npmjs-icon.svg"
+                    alt="npm" class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-200"><img
+                    src="https://cdn-public.softwarereviews.com/production/logos/offerings/4756/medium/AA_Logo.png?1674590162"
+                    alt="AA" class="skill-icon h-16 w-24 object-contain"></div>
+            <div class="breathing reveal delay-300"><img
+                    src="https://img.icons8.com/?size=100&id=MHcMYTljfKOr&format=png&color=000000" alt="Flask"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-100"><img src="https://www.vectorlogo.zone/logos/numpy/numpy-icon.svg"
+                    alt="NumPy" class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-200"><img
+                    src="https://img.icons8.com/?size=100&id=xSkewUSqtErH&format=png&color=000000" alt="Pandas"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-300"><img
+                    src="https://img.icons8.com/?size=100&id=TkX1totjFmAD&format=png&color=000000" alt="Matplotlib"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-100"><img src="https://www.vectorlogo.zone/logos/docker/docker-icon.svg"
+                    alt="Docker" class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-200"><img src="https://seaborn.pydata.org/_static/logo-mark-lightbg.svg"
+                    alt="Seaborn" class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-300"><img
+                    src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="Git"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-100"><img
+                    src="https://img.icons8.com/?size=100&id=62856&format=png&color=000000" alt="GitHub"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-200"><img src="https://www.vectorlogo.zone/logos/python/python-icon.svg"
+                    alt="Python" class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-300"><img src="https://www.vectorlogo.zone/logos/java/java-icon.svg"
+                    alt="Java" class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-100"><img
+                    src="https://www.vectorlogo.zone/logos/w3_html5/w3_html5-icon.svg" alt="HTML"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-200"><img src="https://www.vectorlogo.zone/logos/w3_css/w3_css-icon.svg"
+                    alt="CSS" class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-300"><img
+                    src="https://img.icons8.com/?size=100&id=4PiNHtUJVbLs&format=png&color=000000" alt="Tailwind"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-100"><img
+                    src="https://www.vectorlogo.zone/logos/javascript/javascript-icon.svg" alt="JavaScript"
+                    class="skill-icon h-16 w-16"></div>
+            <div class="breathing reveal delay-200"><img
+                    src="https://img.icons8.com/?size=100&id=g9mmSxx3SwAI&format=png&color=000000" alt="Bootstrap"
+                    class="skill-icon h-16 w-16"></div>
+        </div>
+    </section>
 
+    <section class="min-h-screen flex flex-col items-center justify-center p-6 gap-12 lg:gap-16">
+        <h1
+            class="text-4xl font-bold mb-8 reveal text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-500">
+            Projects</h1>
 
+        <div class="flex flex-col lg:flex-row gap-6 w-full max-w-6xl">
+            <div
+                class="tilt-card reveal-left relative main-card p-8 bg-white shadow-2xl rounded-3xl w-full lg:w-[70%] hover:shadow-3xl border border-gray-100 shimmer-card">
+                <div class="card-label bg-gradient-to-r from-green-400 to-teal-500 shadow-green-500/30">AI</div>
+                <h2 class="text-2xl font-bold mt-6 text-gray-800">VisionCloud – AI-Powered Smart Surveillance System
+                </h2>
+                <p class="text-gray-600 mt-4 leading-relaxed text-lg">
+                    Cloud-based AI surveillance system using BLIP + YOLO for face recognition, scene captioning, and AI
+                    Q/A. Fully Dockerized deployment with real-time monitoring and AI insights.
+                </p>
+            </div>
 
-    <!-- Experience Section -->
-    <section class="min-h-screen flex flex-col items-center justify-center p-4 gap-8 lg:gap-16">
-        <h1 class="text-3xl font-bold mb-8">Experience</h1>
+            <div class="reveal-right relative p-6 rounded-3xl w-full lg:w-[25%] backdrop-blur-md bg-white/30 border border-white/50 shadow-lg 
+                   hover:shadow-2xl transition-all duration-500 flex justify-center items-center gap-6">
+                <a href="#"
+                    class="group w-28 h-28 rounded-2xl bg-white/50 backdrop-blur-lg border border-white/60 shadow-lg flex flex-col items-center justify-center hover:scale-110 transition-all cursor-pointer floating">
+                    <img src="https://cdn-icons-png.flaticon.com/512/992/992651.png"
+                        class="h-10 opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <p class="text-gray-700 mt-2 text-sm font-bold group-hover:text-orange-500 transition-colors">Live
+                        Demo</p>
+                </a>
+                <a href="#"
+                    class="group w-28 h-28 rounded-2xl bg-white/50 backdrop-blur-lg border border-white/60 shadow-lg flex flex-col items-center justify-center hover:scale-110 transition-all cursor-pointer floating"
+                    style="animation-delay: 1s;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png"
+                        class="h-10 opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <p class="text-gray-700 mt-2 text-sm font-bold group-hover:text-orange-500 transition-colors">GitHub
+                    </p>
+                </a>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-6 w-full max-w-6xl">
+            <div
+                class="tilt-card reveal-left relative main-card p-8 bg-white shadow-2xl rounded-3xl w-full lg:w-[70%] hover:shadow-3xl border border-gray-100 shimmer-card">
+                <div class="card-label bg-gradient-to-r from-teal-400 to-green-500 shadow-green-500/30">AI</div>
+                <h2 class="text-2xl font-bold mt-6 text-gray-800">PDF-RAG-1.0 – Local Retrieval-Augmented Intelligence
+                    System</h2>
+                <p class="text-gray-600 mt-4 leading-relaxed text-lg">
+                    Developed a fully local Retrieval-Augmented Generation (RAG) system using LlamaIndex and Hugging
+                    Face models to enable accurate question-answering from PDF documents. Built a complete pipeline for
+                    PDF ingestion, text chunking, embedding generation, and vector search, improving retrieval accuracy
+                    by 70%. Implemented GPU-accelerated local LLMs with multi-document support and source-referenced
+                    answers, enhancing research and academic workflows with fast, context-aware queries.
+                </p>
+            </div>
+
+            <div class="reveal-right relative p-6 rounded-3xl w-full lg:w-[25%] backdrop-blur-md bg-white/30 border border-white/50 shadow-lg 
+                   hover:shadow-2xl transition-all duration-500 flex justify-center items-center gap-6">
+                <a href="#"
+                    class="group w-28 h-28 rounded-2xl bg-white/50 backdrop-blur-lg border border-white/60 shadow-lg flex flex-col items-center justify-center hover:scale-110 transition-all cursor-pointer floating">
+                    <img src="https://cdn-icons-png.flaticon.com/512/992/992651.png"
+                        class="h-10 opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <p class="text-gray-700 mt-2 text-sm font-bold group-hover:text-orange-500 transition-colors">Live
+                        Demo</p>
+                </a>
+                <a href="#"
+                    class="group w-28 h-28 rounded-2xl bg-white/50 backdrop-blur-lg border border-white/60 shadow-lg flex flex-col items-center justify-center hover:scale-110 transition-all cursor-pointer floating"
+                    style="animation-delay: 1s;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png"
+                        class="h-10 opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <p class="text-gray-700 mt-2 text-sm font-bold group-hover:text-orange-500 transition-colors">GitHub
+                    </p>
+                </a>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-6 w-full max-w-6xl">
+            <div
+                class="tilt-card reveal-left relative main-card p-8 bg-white shadow-2xl rounded-3xl w-full lg:w-[70%] hover:shadow-3xl border border-gray-100 shimmer-card">
+                <div class="card-label bg-gradient-to-r from-purple-400 to-pink-500 shadow-purple-500/30">MERN</div>
+                <h2 class="text-2xl font-bold mt-6 text-gray-800">LuxuryDrive - Vehicle Rental Platform</h2>
+                <p class="text-gray-600 mt-4 leading-relaxed text-lg">
+                    Built a scalable vehicle rental platform with Node.js, Express.js, MongoDB, and EJS, increasing user
+                    engagement by 60%.
+                    Implemented MVC architecture, integrated Google OAuth 2.0 authentication and Cloudinary for secure
+                    user data and media management, improving backend efficiency by 35%.
+                    Designed a responsive, mobile-first interface with HTML, CSS, JavaScript, and Bootstrap, enhancing
+                    cross-device accessibility by 45%.
+                </p>
+            </div>
+
+            <div class="reveal-right relative p-6 rounded-3xl w-full lg:w-[25%] backdrop-blur-md bg-white/30 border border-white/50 shadow-lg 
+                   hover:shadow-2xl transition-all duration-500 flex justify-center items-center gap-6">
+                <div
+                    class="group w-28 h-28 rounded-2xl bg-white/50 backdrop-blur-lg border border-white/60 shadow-lg flex flex-col items-center justify-center hover:scale-110 transition-all cursor-pointer floating">
+                    <img src="https://cdn-icons-png.flaticon.com/512/992/992651.png"
+                        class="h-10 opacity-80 group-hover:opacity-100" />
+                    <p class="text-gray-700 mt-2 text-sm font-bold group-hover:text-purple-500 transition-colors">Live
+                        Demo</p>
+                </div>
+                <div class="group w-28 h-28 rounded-2xl bg-white/50 backdrop-blur-lg border border-white/60 shadow-lg flex flex-col items-center justify-center hover:scale-110 transition-all cursor-pointer floating"
+                    style="animation-delay: 1s;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png"
+                        class="h-10 opacity-80 group-hover:opacity-100" />
+                    <p class="text-gray-700 mt-2 text-sm font-bold group-hover:text-purple-500 transition-colors">GitHub
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-6 w-full max-w-6xl">
+            <div
+                class="tilt-card reveal-left relative main-card p-8 bg-white shadow-2xl rounded-3xl w-full lg:w-[70%] hover:shadow-3xl border border-gray-100 shimmer-card">
+                <div class="card-label bg-gradient-to-r from-pink-400 to-purple-500 shadow-purple-500/30">MERN</div>
+                <h2 class="text-2xl font-bold mt-6 text-gray-800">Groups - Contributing on projects</h2>
+                <p class="text-gray-600 mt-4 leading-relaxed text-lg">
+                    Built a scalable vehicle rental platform with Node.js, Express.js, MongoDB, and EJS, increasing user
+                    engagement by 60%.
+                    Implemented MVC architecture, improving backend efficiency by 35%.
+                    Designed a responsive, mobile-first interface with HTML, CSS, JavaScript, and Bootstrap, enhancing
+                    cross-device accessibility by 45%.
+                </p>
+            </div>
+
+            <div class="reveal-right relative p-6 rounded-3xl w-full lg:w-[25%] backdrop-blur-md bg-white/30 border border-white/50 shadow-lg 
+                   hover:shadow-2xl transition-all duration-500 flex justify-center items-center gap-6">
+                <div
+                    class="group w-28 h-28 rounded-2xl bg-white/50 backdrop-blur-lg border border-white/60 shadow-lg flex flex-col items-center justify-center hover:scale-110 transition-all cursor-pointer floating">
+                    <img src="https://cdn-icons-png.flaticon.com/512/992/992651.png"
+                        class="h-10 opacity-80 group-hover:opacity-100" />
+                    <p class="text-gray-700 mt-2 text-sm font-bold group-hover:text-purple-500 transition-colors">Live
+                        Demo</p>
+                </div>
+                <div class="group w-28 h-28 rounded-2xl bg-white/50 backdrop-blur-lg border border-white/60 shadow-lg flex flex-col items-center justify-center hover:scale-110 transition-all cursor-pointer floating"
+                    style="animation-delay: 1s;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png"
+                        class="h-10 opacity-80 group-hover:opacity-100" />
+                    <p class="text-gray-700 mt-2 text-sm font-bold group-hover:text-purple-500 transition-colors">GitHub
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="min-h-screen flex flex-col items-center justify-center p-6 gap-12 lg:gap-16">
+        <h1
+            class="text-4xl font-bold mb-8 reveal text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-500">
+            Experience
+        </h1>
 
         <!-- Experience Card 1 -->
         <div
-            class="relative main-card text-left p-6 bg-white shadow-2xl rounded-3xl w-full sm:w-[85%] md:w-[70%] lg:w-[60%] hover:shadow-3xl transition-transform duration-300">
-            <div class="card-label bg-gradient-to-r from-green-400 to-teal-500">NLDC Grid India</div>
-            <h2 class="text-xl font-semibold mt-4">MERN Stack Developer Intern</h2>
-            <p class="text-gray-600 mt-2">
-                Developed a Demand Analysis Portal using the MERN stack to visualize and manage energy demand data.
-                Modified and optimized the database schema, migrated legacy datasets, and improved data retrieval speed
-                by 30%. Built RESTful APIs and revamped the frontend with ECharts to create a modern, responsive, and
-                enhanced overall user experience.
-            </p>
+            class="flex flex-col lg:flex-row gap-6 w-full max-w-6xl items-start p-6 bg-white/60 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-100">
+            <div
+                class="tilt-card reveal-left relative main-card text-left p-6 bg-white shadow-xl rounded-2xl w-full lg:w-[65%] hover:shadow-2xl border border-gray-100">
+                <div class="card-label bg-gradient-to-r from-yellow-400 to-orange-500 shadow-orange-500/30">NLDC GRID
+                    India</div>
+                <h2 class="text-2xl font-bold mt-6 text-gray-800">MERN Stack Developer Internship</h2>
+                <p class="text-gray-600 mt-4 leading-relaxed text-lg">
+                    Developed a Demand Analysis Portal using the MERN stack to visualize and manage energy demand data.
+                    Enhanced schema design, migrated datasets, and improved API performance. Integrated ECharts for
+                    real-time dashboards and created a modern UI.
+                </p>
+            </div>
+
+            <div class="reveal-right w-full lg:w-[20%] flex gap-4">
+                <img src="/certificate.png"
+                     class="preview-img rounded-2xl shadow-lg hover:scale-105 transition-all duration-500 object-cover 
+                     flex-1 h-48 lg:h-60 cursor-pointer" />
+            
+                <img src="/office.jpeg"
+                     class="preview-img rounded-2xl shadow-lg hover:scale-105 transition-all duration-500 object-cover 
+                     flex-1 h-48 lg:h-60 cursor-pointer" />
+            </div>
+            
+
+        </div>
+
+        <!-- Experience Card 2 -->
+        <div
+            class="flex flex-col lg:flex-row gap-6 w-full max-w-6xl items-start p-6 bg-white/60 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-100">
+            <div
+                class="tilt-card reveal-left relative main-card text-left p-6 bg-white shadow-xl rounded-2xl w-full lg:w-[65%] hover:shadow-2xl border border-gray-100">
+                <div class="card-label bg-gradient-to-r from-red-400 to-purple-500 shadow-red-500/30">Nischay Foundation
+                </div>
+                <h2 class="text-2xl font-bold mt-6 text-gray-800">Web Content Developer</h2>
+                <p class="text-gray-600 mt-4 leading-relaxed text-lg">
+                    Managed and enhanced the NGO's WordPress site by creating new pages and posts, improving layout
+                    structure, and ensuring accessibility. Delivered a clean, engaging, and user-friendly interface.
+                </p>
+            </div>
+            <div class="reveal-right lg:w-[20%] image-box">
+                <img src="/word-press.png"
+                     class="preview-img rounded-2xl shadow-lg hover:scale-105 transition-all duration-500 
+                     object-cover h-48 lg:h-60 cursor-pointer" />
+            
+                <img src="/wordpress.png"
+                     class="preview-img rounded-2xl shadow-lg hover:scale-105 transition-all duration-500 
+                     object-cover h-48 lg:h-60 cursor-pointer" />
+            </div>            
+            
         </div>
     </section>
+
+
+    <section class="min-h-screen flex flex-col items-center justify-center p-6 gap-12 lg:gap-16" id="certificates">
+        <h1
+            class="text-4xl font-bold mb-6 reveal text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-500">
+            Certificates
+        </h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 w-full max-w-6xl">
+
+            <!-- Certificate Card 1 -->
+            <div
+                class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-4 relative transform transition-all hover:scale-[1.03] hover:shadow-3xl border border-white/50 reveal">
+                <img src="generative_ai.png"
+                    class="preview-img rounded-2xl w-full h-56 object-cover shadow-md hover:scale-105 transition-transform duration-500" />
+                <h2 class="text-xl font-bold mt-4 text-gray-800">Generative AI </h2>
+                <p class="text-gray-600 text-sm mt-1">Issued by Oracle University</p>
+            </div>
+
+            <!-- Certificate Card 2 -->
+            <div
+                class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-4 relative transform transition-all hover:scale-[1.03] hover:shadow-3xl border border-white/50 reveal delay-100">
+                <img src="vector_search.png"
+                    class="preview-img rounded-2xl w-full h-56 object-cover shadow-md hover:scale-105 transition-transform duration-500" />
+                <h2 class="text-xl font-bold mt-4 text-gray-800">Vector Search</h2>
+                <p class="text-gray-600 text-sm mt-1">Issued by Oracle University</p>
+            </div>
+
+            <!-- Certificate Card 3 -->
+            <div
+                class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-4 relative transform transition-all hover:scale-[1.03] hover:shadow-3xl border border-white/50 reveal delay-200">
+                <img src="postman.png"
+                    class="preview-img rounded-2xl w-full h-56 object-cover shadow-md hover:scale-105 transition-transform duration-500" />
+                <h2 class="text-xl font-bold mt-4 text-gray-800">Postman API Fundamentals Student Expert</h2>
+                <p class="text-gray-600 text-sm mt-1">Issued by Postman</p>
+            </div>
+
+            <!-- Certificate Card 4 -->
+            <div
+                class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-4 relative transform transition-all hover:scale-[1.03] hover:shadow-3xl border border-white/50 reveal delay-200">
+                <img src="microsoft.png"
+                    class="preview-img rounded-2xl w-full h-56 object-cover shadow-md hover:scale-105 transition-transform duration-500" />
+                <h2 class="text-xl font-bold mt-4 text-gray-800">Introduction to Generative AI and Agents</h2>
+                <p class="text-gray-600 text-sm mt-1">Issued by Microsoft</p>
+            </div>
+
+            <!-- Certificate Card 5 -->
+            <div
+                class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-4 relative transform transition-all hover:scale-[1.03] hover:shadow-3xl border border-white/50 reveal delay-200">
+                <img src="data-science-certificate.png"
+                    class="preview-img rounded-2xl w-full h-56 object-cover shadow-md hover:scale-105 transition-transform duration-500" />
+                <h2 class="text-xl font-bold mt-4 text-gray-800">Introduction to Data Science</h2>
+                <p class="text-gray-600 text-sm mt-1">Issued by Cisco</p>
+            </div>
+
+            <!-- Certificate Card 6 -->
+            <div
+                class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-4 relative transform transition-all hover:scale-[1.03] hover:shadow-3xl border border-white/50 reveal delay-200">
+                <img src="nptel.jpeg"
+                    class="preview-img rounded-2xl w-full h-56 object-cover shadow-md hover:scale-105 transition-transform duration-500" />
+                <h2 class="text-xl font-bold mt-4 text-gray-800">Cloud Computing</h2>
+                <p class="text-gray-600 text-sm mt-1">Issued by NPTEL</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="min-h-screen flex flex-col items-center justify-center p-6 gap-12 lg:gap-16" id="badges">
+        <h1 class="text-4xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-500">
+            Badges
+        </h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 w-full max-w-6xl">
+
+            <!-- Badge 0 -->
+            <div
+                class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-4 relative transform transition-all hover:scale-[1.03] hover:shadow-3xl border border-white/50">
+                <img src="leetcode-100.png"
+                    class="rounded-2xl w-full h-40 object-contain shadow-md hover:scale-105 transition-transform duration-500" />
+                <h2 class="text-xl font-bold mt-4 text-gray-800">SOLVING PROBLEMS 100+ DAYS IN 2025</h2>
+                <p class="text-gray-600 text-sm mt-1">Issued by LeetCode</p>
+            </div>
+
+            <!-- Badge 1 -->
+            <div
+                class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-4 relative transform transition-all hover:scale-[1.03] hover:shadow-3xl border border-white/50">
+                <img src="Postman - Postman API Fundamentals Student Expert - 2025-11-30.png"
+                    class="rounded-2xl w-full h-40 object-contain shadow-md hover:scale-105 transition-transform duration-500" />
+                <h2 class="text-xl font-bold mt-4 text-gray-800">API Fundamentals Student Expert</h2>
+                <p class="text-gray-600 text-sm mt-1">Issued by Postman</p>
+            </div>
+
+            <!-- Badge 2 -->
+            <div
+                class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-4 relative transform transition-all hover:scale-[1.03] hover:shadow-3xl border border-white/50">
+                <img src="microsoft_badge.png"
+                    class="rounded-2xl w-full h-40 object-contain shadow-md hover:scale-105 transition-transform duration-500" />
+                <h2 class="text-xl font-bold mt-4 text-gray-800">Introduction to generative ai and agents</h2>
+                <p class="text-gray-600 text-sm mt-1">Issued by Microsoft</p>
+            </div>
+
+            <!-- Badge 3 -->
+            <div
+                class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-4 relative transform transition-all hover:scale-[1.03] hover:shadow-3xl border border-white/50">
+                <img src="data-science.png"
+                    class="rounded-2xl w-full h-40 object-contain shadow-md hover:scale-105 transition-transform duration-500" />
+                <h2 class="text-xl font-bold mt-4 text-gray-800">Introduction to Data Science</h2>
+                <p class="text-gray-600 text-sm mt-1">Issued by Cisco</p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="min-h-screen flex flex-col items-center justify-center p-6 gap-10 lg:gap-14" id="resume">
+        <h1
+            class="text-4xl font-bold mb-6 reveal text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-500">
+            Resume
+        </h1>
+
+        <div
+            class="tilt-card shimmer-card bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-6 w-full max-w-sm relative transform transition-all hover:scale-[1.02] hover:shadow-3xl border border-white/50 reveal">
+
+            <!-- Blurred resume preview -->
+            <div class="relative w-full h-80 overflow-hidden rounded-2xl shadow-md">
+                <img src="resume.png" class="preview-img w-full h-full object-cover  transition-all duration-200" />
+            </div>
+
+            <!-- Resume title -->
+            <h2 class="text-2xl font-bold mt-6 text-gray-800">My Resume</h2>
+            <p class="text-gray-600 text-sm mt-1">Download my latest resume with one click.</p>
+
+            <!-- Download button -->
+            <a href="satyam.pdf" download
+                class="mt-5 inline-block w-full text-center bg-gray-800 text-white py-3 rounded-2xl font-semibold shadow-md hover:bg-gray-700 transition-all">
+                Download Resume
+            </a>
+        </div>
+
+        <div id="imageModal"
+            class="fixed inset-0 bg-black/70 opacity-0 pointer-events-none flex items-center justify-center z-[2000] backdrop-blur-sm transition-opacity duration-300">
+            <img id="modalImage" class="rounded-3xl shadow-2xl animate-zoomIn"
+                style="max-width: calc(100vw - 200px); max-height: calc(100vh - 200px);" />
+        </div>
+    </section>
+
+    <script>
+        // --- Intersection Observer ---
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- Progress Bar ---
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+
+            const backToTop = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // --- 3D Tilt Effect ---
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+
+        // --- DYNAMIC NODE CONNECTION ANIMATION ---
+        function drawConnections() {
+            const svg = document.getElementById('connection-svg');
+            const mainCard = document.getElementById('profileCard');
+            const linkCards = document.querySelectorAll('.profile-link-card');
+            const container = document.getElementById('home-section');
+
+            // Clear existing paths
+            svg.innerHTML = '';
+
+            if (!mainCard || linkCards.length === 0) return;
+
+            const containerRect = container.getBoundingClientRect();
+            const mainRect = mainCard.getBoundingClientRect();
+
+            linkCards.forEach((card, index) => {
+                const cardRect = card.getBoundingClientRect();
+
+                // Coordinates relative to the section container
+                // We want connection from:
+                // Desktop: Right Center of Main -> Left Center of Link
+                // Mobile: Bottom Center of Main -> Top Center of Link
+
+                let x1, y1, x2, y2;
+                const isDesktop = window.innerWidth >= 1024;
+
+                if (isDesktop) {
+                    x1 = mainRect.right - containerRect.left;
+                    y1 = mainRect.top + (mainRect.height / 2) - containerRect.top;
+                    x2 = cardRect.left - containerRect.left;
+                    y2 = cardRect.top + (cardRect.height / 2) - containerRect.top;
+                } else {
+                    x1 = mainRect.left + (mainRect.width / 2) - containerRect.left;
+                    y1 = mainRect.bottom - containerRect.top;
+                    x2 = cardRect.left + (cardRect.width / 2) - containerRect.left;
+                    y2 = cardRect.top - containerRect.top;
+                }
+
+                // Create Bezier Curve Path
+                // Control points for smooth curve
+                const c1x = isDesktop ? (x1 + x2) / 2 : x1;
+                const c1y = isDesktop ? y1 : (y1 + y2) / 2;
+                const c2x = isDesktop ? (x1 + x2) / 2 : x2;
+                const c2y = isDesktop ? y2 : (y1 + y2) / 2;
+
+                const pathData = `M ${x1} ${y1} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${x2} ${y2}`;
+
+                // 1. Draw the static line
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", pathData);
+                path.setAttribute("class", "connection-line");
+                svg.appendChild(path);
+
+                // 2. Draw the moving particle
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("r", "4");
+                circle.setAttribute("class", "connection-particle");
+
+                // Animate the particle along the path
+                const animateMotion = document.createElementNS("http://www.w3.org/2000/svg", "animateMotion");
+                animateMotion.setAttribute("dur", "2s"); // Staggered timing
+                animateMotion.setAttribute("repeatCount", "indefinite");
+                animateMotion.setAttribute("path", pathData);
+
+                circle.appendChild(animateMotion);
+                svg.appendChild(circle);
+            });
+        }
+
+        // Run on load and resize
+        window.addEventListener('load', drawConnections);
+        window.addEventListener('resize', drawConnections);
+        // Recalculate on scroll initially to catch animations settling
+        setTimeout(drawConnections, 1000);
+
+
+
+
+        const modal = document.getElementById("imageModal");
+        const modalImage = document.getElementById("modalImage");
+
+        document.querySelectorAll(".preview-img").forEach(img => {
+            img.addEventListener("click", () => {
+
+                modalImage.src = img.src;
+
+                // Show modal
+                modal.classList.remove("opacity-0", "pointer-events-none");
+
+                // Restart zoom animation
+                modalImage.classList.remove("animate-zoomIn");
+                void modalImage.offsetWidth;
+                modalImage.classList.add("animate-zoomIn");
+            });
+        });
+
+        // Close modal on click
+        modal.addEventListener("click", () => {
+            modal.classList.add("opacity-0", "pointer-events-none");
+        });
+
+
+    </script>
 </body>
+
 </html>
